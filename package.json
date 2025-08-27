@@ -9,12 +9,21 @@
   "scripts": {
     "bootstrap": "yarn install",
     "start": "cross-env isLocal=true lerna run start --stream",
+    "start:root": "cd packages/single-spa-root-config && yarn start",
+    "start:navbar": "cd packages/single-spa-navbar && yarn start",
+    "start:home": "cd packages/single-spa-home && yarn start",
+    "start:employees": "cd packages/single-spa-employees && yarn start",
+    "start:employee-details": "cd packages/single-spa-employee-details && yarn start",
     "prebuild": "rimraf deploy && mkdirp deploy deploy/single-spa-root-config deploy/single-spa-home deploy/single-spa-navbar deploy/single-spa-employees deploy/single-spa-employee-details",
     "build": "lerna run build",
     "postbuild": "cp packages/single-spa-root-config/dist/* deploy && cp packages/single-spa-home/dist/* deploy/single-spa-home && cp packages/single-spa-navbar/dist/* deploy/single-spa-navbar && cp packages/single-spa-employees/dist/* deploy/single-spa-employees && cp packages/single-spa-employee-details/dist/* deploy/single-spa-employee-details",
     "deploy": "yarn bootstrap && yarn build",
     "preserve": "yarn build",
-    "serve": "npx serve deploy -s -n -C"
+    "serve": "npx serve deploy -s -n -C",
+    "clean": "lerna clean && rimraf node_modules deploy",
+    "lint": "lerna run lint",
+    "test": "lerna run test",
+    "format": "lerna run format"
   },
   "keywords": [
     "single-spa"
@@ -27,11 +36,16 @@
     "@babel/preset-react": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "babel-loader": "^8.2.5",
-    "@types/react": "^17.0.35",
-    "@types/react-dom": "^17.0.11",
+    "typescript": "^4.3.5",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "@types/babel__traverse": "^7.14.2",
+    "@babel/types": "^7.14.5",
+    "cross-env": "^7.0.3",
     "mkdirp": "^1.0.4",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.0",
+    "serve": "^14.0.0",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.1.0",
     "rollup-plugin-svelte": "7.2.2",
@@ -39,7 +53,7 @@
     "rollup": "^2.38.1",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-css-only": "^3.1.0",
-    "rollup-plugin-terser": "^7.0.2",    
+    "rollup-plugin-terser": "^7.0.2",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-config-single-spa": "^4.0.0",
@@ -58,6 +72,6 @@
     "svelte": "^3.44.0",
     "svelte-routing": "^1.5.0",
     "sirv-cli": "^1.0.14",
-	"js-yaml": "^3.14.0"
+    "js-yaml": "^3.14.0"
   }
 }
