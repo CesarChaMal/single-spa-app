@@ -6,11 +6,17 @@ A complete single-spa microfrontend architecture demonstrating multiple framewor
 
 This application consists of 5 microfrontends:
 
-- **Root Config** (Port 9001) - Main orchestrator using single-spa
-- **Navbar** (Port 9002) - Navigation component (React/JavaScript)
-- **Employees** (Port 9003) - Employee list page (React/TypeScript)
-- **Home** (Port 9004) - Landing page (React/TypeScript)
-- **Employee Details** (Port 4200) - Employee detail view (Angular)
+| Microfrontend | Port | Technology | Description |
+|---------------|------|------------|-------------|
+| 📋 **Root Config** | 9001 | Single-SPA | Main orchestrator and application shell |
+| 🗂️ **Navbar** | 9002 | React/JavaScript | Navigation component and routing |
+| 👥 **Employees** | 9003 | React/TypeScript | Employee list and management |
+| 🏠 **Home** | 9004 | React/TypeScript | Landing page and dashboard |
+| 👤 **Employee Details** | 4200 | Angular 9 | Individual employee detail views |
+
+### 🌐 Application URLs
+- **Main Application**: http://localhost:9001
+- **Individual Services**: Each microfrontend runs independently on its respective port
 
 ## Quick Start
 
@@ -45,10 +51,18 @@ packages/
 └── single-spa-employee-details/ # Employee details (Angular)
 ```
 
-### Routes
-- `/` - Home page
-- `/employees` - Employee list
-- `/employees/:id` - Employee details
+### 🛣️ Routes
+- `/` - Home page (React/TypeScript)
+- `/employees` - Employee list (React/TypeScript)
+- `/employees/:id` - Employee details (Angular)
+
+### 🔧 Management Scripts
+- `./microfrontend.sh` or `microfrontend.bat` - Start all services
+- `./microfrontend.sh setup` - Setup Node.js and yarn
+- `./microfrontend.sh clean` - Clean dependencies
+- `./microfrontend.sh build` - Build for production
+- `./microfrontend.sh stop` - Stop all services
+- `./microfrontend.sh individual` - Start individual service
 
 ### Individual Development
 Each microfrontend can be developed independently:
