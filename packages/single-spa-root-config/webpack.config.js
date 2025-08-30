@@ -9,7 +9,7 @@ module.exports = env => ({
     libraryTarget: "system",
     path: path.resolve(__dirname, "dist")
   },
-  devtool: "sourcemap",
+  devtool: "source-map",
   module: {
     rules: [
       { parser: { system: false } },

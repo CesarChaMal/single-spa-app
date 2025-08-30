@@ -1,14 +1,15 @@
-const webpackMerge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const singleSpaDefaults = require("webpack-config-single-spa-react-ts");
 
-module.exports = (webpackConfigEnv) => {
+module.exports = (webpackConfigEnv, argv) => {
   const defaultConfig = singleSpaDefaults({
     orgName: "mf-demo",
     projectName: "employees",
     webpackConfigEnv,
+    argv,
   });
 
-  return webpackMerge.smart(defaultConfig, {
-    // modify the webpack config however you'd like to by adding to this object
+  return merge(defaultConfig, {
+    devtool: "source-map"
   });
 };
