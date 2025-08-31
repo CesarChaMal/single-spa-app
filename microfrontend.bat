@@ -81,6 +81,9 @@ goto :eof
 
 :clean
 echo Cleaning all dependencies and build artifacts...
+REM Stop services first
+call :stop
+REM Clean all artifacts
 if exist node_modules rmdir /s /q node_modules
 if exist deploy rmdir /s /q deploy
 if exist yarn.lock del yarn.lock
@@ -88,8 +91,10 @@ if exist package-lock.json del package-lock.json
 for /d %%i in (packages\*) do (
     if exist "%%i\node_modules" rmdir /s /q "%%i\node_modules"
     if exist "%%i\dist" rmdir /s /q "%%i\dist"
+    if exist "%%i\.next" rmdir /s /q "%%i\.next"
 )
-call npm cache clean --force
+call npm cache clean --force >nul 2>&1
+call yarn cache clean >nul 2>&1
 echo Clean complete!
 goto :eof
 
@@ -138,9 +143,27 @@ pause
 goto :eof
 
 :stop
-echo Stopping all Node.js processes...
-taskkill /f /im node.exe >nul 2>&1
-echo All services stopped!
+setlocal enabledelayedexpansion
+echo Stopping microfrontend services...
+REM Stop services by port
+for %%p in (9001 9002 9003 9004 4200) do (
+    for /f "tokens=2,5" %%a in ('netstat -aon 2^>nul ^| findstr ":%%p "') do (
+        if "%%a"=="0.0.0.0:%%p" (
+            taskkill /f /pid %%b >nul 2>&1
+            if !errorlevel! equ 0 echo Stopped service on port %%p
+        )
+        if "%%a"=="[::]:%%p" (
+            taskkill /f /pid %%b >nul 2>&1
+            if !errorlevel! equ 0 echo Stopped service on port %%p
+        )
+        if "%%a"=="127.0.0.1:%%p" (
+            taskkill /f /pid %%b >nul 2>&1
+            if !errorlevel! equ 0 echo Stopped service on port %%p
+        )
+    )
+)
+echo All microfrontend services stopped!
+endlocal
 pause
 goto :eof
 

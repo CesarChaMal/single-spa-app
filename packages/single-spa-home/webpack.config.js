@@ -1,5 +1,5 @@
-const { merge } = require("webpack-merge");
-const singleSpaDefaults = require("webpack-config-single-spa-react-ts");
+const webpackMerge = require("webpack-merge");
+const singleSpaDefaults = require("webpack-config-single-spa-react");
 
 module.exports = (webpackConfigEnv, argv) => {
   const defaultConfig = singleSpaDefaults({
@@ -9,7 +9,28 @@ module.exports = (webpackConfigEnv, argv) => {
     argv,
   });
 
-  return merge(defaultConfig, {
-    // modify the webpack config however you'd like to by adding to this object
+  return webpackMerge(defaultConfig, {
+    devtool: "source-map",
+    module: {
+      rules: [
+        {
+          test: /\.(js|ts|tsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: [
+                "@babel/preset-env",
+                "@babel/preset-react",
+                "@babel/preset-typescript"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    resolve: {
+      extensions: [".js", ".jsx", ".ts", ".tsx"]
+    }
   });
 };

@@ -77,8 +77,13 @@ setup_node() {
 
 clean_all() {
     echo "Cleaning all dependencies and build artifacts..."
-    rm -rf node_modules packages/*/node_modules packages/*/dist deploy yarn.lock package-lock.json
-    npm cache clean --force
+    # Stop any running services first
+    stop_all
+    # Clean all artifacts
+    rm -rf node_modules packages/*/node_modules packages/*/dist packages/*/.next deploy yarn.lock package-lock.json
+    # Clean package manager caches
+    npm cache clean --force 2>/dev/null || true
+    yarn cache clean 2>/dev/null || true
     echo "Clean complete!"
 }
 
@@ -87,7 +92,17 @@ install_deps() {
     
     # Disable husky installation by removing postinstall scripts
     echo "Disabling husky to avoid git issues..."
-    find packages -name "package.json" -exec sed -i 's/"husky install"/"echo skipping husky install"/g' {} \;
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        # Windows Git Bash - use PowerShell for reliable text replacement
+        for f in packages/*/package.json; do
+            if [ -f "$f" ]; then
+                powershell.exe -Command "(Get-Content '$f') -replace '\"husky install\"', '\"echo skipping husky install\"' | Set-Content '$f'" 2>/dev/null || true
+            fi
+        done
+    else
+        # Linux/WSL/Unix - use find with sed
+        find packages -name "package.json" -exec sed -i 's/"husky install"/"echo skipping husky install"/g' {} \; 2>/dev/null || true
+    fi
     
     # Set environment variables to skip husky
     export HUSKY=0
@@ -132,9 +147,42 @@ build_all() {
 }
 
 stop_all() {
-    echo "Stopping all Node.js processes..."
-    pkill -f "webpack-dev-server\|ng serve"
-    echo "All services stopped!"
+    echo "Stopping microfrontend services..."
+    # Stop services by port
+    for port in 9001 9002 9003 9004 4200; do
+        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+            # Windows Git Bash - use .exe executables
+            pid=$(netstat.exe -ano 2>/dev/null | grep ":$port " | awk '{print $5}' | head -1)
+            if [ -n "$pid" ] && [ "$pid" != "0" ]; then
+                taskkill.exe //F //PID $pid >/dev/null 2>&1 && echo "Stopped service on port $port"
+            fi
+        elif [[ -f /proc/version ]] && grep -q Microsoft /proc/version; then
+            # WSL - use Linux commands but may need different approach
+            if command -v lsof >/dev/null 2>&1; then
+                pid=$(lsof -ti:$port 2>/dev/null | head -1)
+            elif command -v ss >/dev/null 2>&1; then
+                pid=$(ss -tlnp 2>/dev/null | grep ":$port " | sed -n 's/.*pid=\([0-9]*\).*/\1/p' | head -1)
+            elif command -v netstat >/dev/null 2>&1; then
+                pid=$(netstat -tlnp 2>/dev/null | grep ":$port " | awk '{print $7}' | cut -d'/' -f1 | head -1)
+            fi
+            if [ -n "$pid" ] && [ "$pid" != "0" ]; then
+                kill -9 $pid 2>/dev/null && echo "Stopped service on port $port"
+            fi
+        else
+            # Unix/Linux/macOS
+            if command -v lsof >/dev/null 2>&1; then
+                pid=$(lsof -ti:$port 2>/dev/null | head -1)
+            elif command -v ss >/dev/null 2>&1; then
+                pid=$(ss -tlnp 2>/dev/null | grep ":$port " | sed -n 's/.*pid=\([0-9]*\).*/\1/p' | head -1)
+            elif command -v netstat >/dev/null 2>&1; then
+                pid=$(netstat -tlnp 2>/dev/null | grep ":$port " | awk '{print $7}' | cut -d'/' -f1 | head -1)
+            fi
+            if [ -n "$pid" ] && [ "$pid" != "0" ]; then
+                kill -9 $pid 2>/dev/null && echo "Stopped service on port $port"
+            fi
+        fi
+    done
+    echo "All microfrontend services stopped!"
 }
 
 start_individual() {
@@ -164,8 +212,8 @@ case "$1" in
         clean_all
         ;;
     build)
-        setup_node
-        clean_all
+#        setup_node
+#        clean_all
         install_deps
         build_all
         ;;

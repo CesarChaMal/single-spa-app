@@ -9,7 +9,7 @@ module.exports = (webpackConfigEnv) => {
     webpackConfigEnv,
   });
 
-  return webpackMerge.smart(defaultConfig, {
+  return webpackMerge(defaultConfig, {
     // customizations can go here
     module: {
       rules: [
