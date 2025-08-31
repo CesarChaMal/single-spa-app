@@ -186,15 +186,43 @@ goto :eof
 echo Single-SPA Microfrontend Manager
 echo.
 call :setup
-call :clean
 call :install
 echo Starting all microfrontends using lerna...
 call yarn --version >nul 2>&1
 if %errorlevel% equ 0 (
-    call yarn start
+    start "root-config" cmd /c yarn start:root
+    start "navbar" cmd /c yarn start:navbar
+    start "employees" cmd /c yarn start:employees
+    start "home" cmd /c yarn start:home
+    start "employee-details" cmd /c yarn start:employee-details
 ) else (
-    call npm run start
+    start "root-config" cmd /c npm run start:root
+    start "navbar" cmd /c npm run start:navbar
+    start "employees" cmd /c npm run start:employees
+    start "home" cmd /c npm run start:home
+    start "employee-details" cmd /c npm run start:employee-details
 )
+
+REM Wait for Angular dev server to serve employee-details.js
+setlocal enabledelayedexpansion
+echo Waiting for Angular dev server on http://localhost:4200 ...
+set /a COUNT=0
+:wait_loop
+powershell -Command "try { (Invoke-WebRequest -UseBasicParsing http://localhost:4200/employee-details.js).StatusCode -eq 200 } catch { $false }" >nul 2>&1
+if %errorlevel% equ 0 (
+  echo Angular is up.
+) else (
+  set /a COUNT+=1
+  if !COUNT! geq 30 (
+    echo Timed out waiting for Angular (port 4200). Please check the Angular console window for errors.
+    goto after_wait
+  )
+  timeout /t 1 >nul
+  goto wait_loop
+)
+:after_wait
+
+
 echo.
 echo Microfrontend Architecture Status:
 echo    Root Config (Orchestrator): http://localhost:9001

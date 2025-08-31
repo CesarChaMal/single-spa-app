@@ -18,6 +18,7 @@ registerApplication({
   app: () => System.import("@mf-demo/employee-details"),
   activeWhen: isActive.employeeDetails
 });
+;
 
 registerApplication({
   name: "@mf-demo/home",

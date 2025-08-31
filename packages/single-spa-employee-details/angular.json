@@ -13,9 +13,6 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "webpack.config.js"
-            },
             "outputPath": "dist/employee-details",
             "index": "src/index.html",
             "main": "src\\main.single-spa.ts",
@@ -29,8 +26,10 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
-
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "extra-webpack.config.js"
+            }
           },
           "configurations": {
             "production": {
@@ -125,8 +124,5 @@
       }
     }
   },
-  "defaultProject": "employee-details",
-  "cli": {
-    "analytics": false
-  }
+  "defaultProject": "employee-details"
 }

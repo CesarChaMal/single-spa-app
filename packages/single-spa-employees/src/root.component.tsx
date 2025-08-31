@@ -20,26 +20,13 @@ export default class Root extends React.Component<any, ComponentState> {
   }
 
   componentDidMount() {
-    fetch("https://reqres.in/api/users")
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error('API request failed');
-      })
+    fetch("http://localhost:9001/employees.json")
+      .then((response) => response.json())
       .then((data) => {
-        this.setState({ employees: data.data || [] });
+        this.setState({ employees: data.data });
       })
       .catch((error) => {
         console.error('Failed to fetch employees:', error);
-        // Use mock data as fallback
-        this.setState({ 
-          employees: [
-            { id: 1, first_name: "John", last_name: "Doe", email: "john@example.com", avatar: "" },
-            { id: 2, first_name: "Jane", last_name: "Smith", email: "jane@example.com", avatar: "" },
-            { id: 3, first_name: "Bob", last_name: "Johnson", email: "bob@example.com", avatar: "" }
-          ]
-        });
       });
   }
 

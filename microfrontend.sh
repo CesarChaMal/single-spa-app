@@ -212,8 +212,8 @@ case "$1" in
         clean_all
         ;;
     build)
-#        setup_node
-#        clean_all
+        setup_node
+        clean_all
         install_deps
         build_all
         ;;
@@ -229,7 +229,18 @@ case "$1" in
 #        setup_node
 #        clean_all
         install_deps
-        start_all
+        start_all &
+
+        # Wait briefly for Angular (port 4200) to come up to avoid initial import failures
+        echo "Waiting for Angular dev server on http://localhost:4200 ..."
+        for i in {1..30}; do
+          if curl -sSf http://localhost:4200/employee-details.js >/dev/null 2>&1; then
+            echo "Angular is up."
+            break
+          fi
+          sleep 1
+        done
+
         echo
         echo "All microfrontends starting..."
         echo

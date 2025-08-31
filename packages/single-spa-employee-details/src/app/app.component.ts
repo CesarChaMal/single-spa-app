@@ -35,8 +35,10 @@ export class AppComponent implements OnInit, OnDestroy {
     const id = window.location.pathname.substr(
       window.location.pathname.lastIndexOf('/') + 1
     );
-    fetch(`https://reqres.in/api/users/${id}`).then((response) => {
-      response.json().then((data) => (this.employee = data.data));
+    fetch(`http://localhost:9001/employees.json`).then((response) => {
+      response.json().then((data) => {
+        this.employee = data.data.find((emp: Employee) => emp.id == id);
+      });
     });
   }
 
