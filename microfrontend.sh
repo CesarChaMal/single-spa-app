@@ -226,8 +226,8 @@ case "$1" in
     *)
         echo "Single-SPA Microfrontend Manager"
         echo
-#        setup_node
-#        clean_all
+        setup_node
+        clean_all
         install_deps
         start_all &
 
