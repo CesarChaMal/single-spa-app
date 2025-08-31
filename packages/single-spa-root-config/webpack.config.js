@@ -23,6 +23,10 @@ module.exports = env => ({
   devServer: {
     historyApiFallback: true,
     disableHostCheck: true,
+    static: {
+      directory: path.join(__dirname, 'public'),
+      publicPath: '/'
+    },
     headers: {
       "Access-Control-Allow-Origin": "*"
     }
