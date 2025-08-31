@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     fetch(`http://localhost:9001/employees.json`).then((response) => {
       response.json().then((data) => {
-        this.employee = data.data.find((emp: Employee) => emp.id == id);
+        this.employee = data.data.find((emp: Employee) => emp.id == parseInt(id));
       });
     });
   }
