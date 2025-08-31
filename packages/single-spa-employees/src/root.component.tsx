@@ -1,5 +1,4 @@
 import React from "react";
-import { BrowserRouter, Link } from "react-router-dom";
 
 export interface Employee {
   id: number;
@@ -21,9 +20,27 @@ export default class Root extends React.Component<any, ComponentState> {
   }
 
   componentDidMount() {
-    fetch("https://reqres.in/api/users").then((response) => {
-      response.json().then((data) => this.setState({ employees: data.data }));
-    });
+    fetch("https://reqres.in/api/users")
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('API request failed');
+      })
+      .then((data) => {
+        this.setState({ employees: data.data || [] });
+      })
+      .catch((error) => {
+        console.error('Failed to fetch employees:', error);
+        // Use mock data as fallback
+        this.setState({ 
+          employees: [
+            { id: 1, first_name: "John", last_name: "Doe", email: "john@example.com", avatar: "" },
+            { id: 2, first_name: "Jane", last_name: "Smith", email: "jane@example.com", avatar: "" },
+            { id: 3, first_name: "Bob", last_name: "Johnson", email: "bob@example.com", avatar: "" }
+          ]
+        });
+      });
   }
 
   componentDidCatch(error, errorInfo) {
@@ -33,7 +50,7 @@ export default class Root extends React.Component<any, ComponentState> {
   render() {
     const { employees } = this.state;
 
-    if (!employees.length) {
+    if (!employees || !employees.length) {
       return (
         <div className="spinner-border" role="status">
           <span className="sr-only">Loading...</span>
@@ -42,7 +59,7 @@ export default class Root extends React.Component<any, ComponentState> {
     }
 
     return (
-      <BrowserRouter basename="/">
+      <div>
         <table className="table table-striped table-bordered table-sm">
           <thead>
             <tr>
@@ -57,7 +74,7 @@ export default class Root extends React.Component<any, ComponentState> {
               return (
                 <tr key={employee.id}>
                   <th>
-                    <Link to={`/employees/${employee.id}`}>{employee.id}</Link>
+                    <a href={`/employees/${employee.id}`}>{employee.id}</a>
                   </th>
                   <td>{employee.first_name}</td>
                   <td>{employee.last_name}</td>
@@ -67,8 +84,8 @@ export default class Root extends React.Component<any, ComponentState> {
             })}
           </tbody>
         </table>
-        <em>{this.props.name} using React</em>
-      </BrowserRouter>
+        <em>Employees - React/TypeScript</em>
+      </div>
     );
   }
 }

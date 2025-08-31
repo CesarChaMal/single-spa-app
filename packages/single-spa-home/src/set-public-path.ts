@@ -1,3 +1,3 @@
 import { setPublicPath } from "systemjs-webpack-interop";
 
-setPublicPath("@mf-demo/navbar");
+setPublicPath("@mf-demo/home");

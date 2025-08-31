@@ -234,11 +234,11 @@ case "$1" in
         echo "All microfrontends starting..."
         echo
         echo "🚀 Microfrontend Architecture Status:"
-        echo "   📋 Root Config (Orchestrator): http://localhost:9001"
-        echo "   🧭 Navbar (React/JS):          http://localhost:9002"
-        echo "   👥 Employees (React/TS):       http://localhost:9003"
-        echo "   🏠 Home (React/TS):            http://localhost:9004"
-        echo "   👤 Employee Details (Angular): http://localhost:4200"
+        echo "   📋 Root Config (Single-SPA):   http://localhost:9001"
+        echo "   🧭 Navbar (React/JavaScript): http://localhost:9002"
+        echo "   👥 Employees (React/TypeScript): http://localhost:9003"
+        echo "   🏠 Home (React/TypeScript):     http://localhost:9004"
+        echo "   👤 Employee Details (Angular 9): http://localhost:4200"
         echo
         echo "📱 Main Application: http://localhost:9001"
         echo "⚠️  Press Ctrl+C to stop all services"

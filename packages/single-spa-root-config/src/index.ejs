@@ -14,12 +14,11 @@
         "react": "https://cdn.jsdelivr.net/npm/react@16.13.0/umd/react.production.min.js",
         "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.13.0/umd/react-dom.production.min.js",
         "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.3.0/lib/system/single-spa.min.js",
-        "single-spa-root-config": "//localhost:9001/mf-demo-root-config.js",
-        "single-spa-navbar": "//localhost:9002/mf-demo-navbar.js",
-        "single-spa-employees": "//localhost:9003/mf-demo-employees.js",
-        "single-spa-employee-details": "//localhost:4200/main.js",
-        "single-spa-home": "//localhost:9004/mf-demo-home.js",
-        "single-spa-home": "//localhost:9004/mf-demo-home.js",
+        "@mf-demo/root-config": "//localhost:9001/mf-demo-root-config.js",
+        "@mf-demo/navbar": "//localhost:9002/mf-demo-navbar.js",
+        "@mf-demo/employees": "//localhost:9003/mf-demo-employees.js",
+        "@mf-demo/employee-details": "//localhost:4200/main.js",
+        "@mf-demo/home": "//localhost:9004/mf-demo-home.js",
         "rxjs": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs/system/rxjs.min.js",
         "rxjs/operators": "https://cdn.jsdelivr.net/npm/@esm-bundle/rxjs/system/rxjs-operators.min.js"
       }
@@ -42,7 +41,7 @@
     </div>
   </div>  
   <script>
-    System.import('single-spa-root-config');
+    System.import('@mf-demo/root-config');
   </script>
   <import-map-overrides-full show-when-local-storage="devtools" dev-libs></import-map-overrides-full>
 </body>

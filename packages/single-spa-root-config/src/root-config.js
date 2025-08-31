@@ -2,26 +2,26 @@ import { registerApplication, start } from "single-spa";
 import * as isActive from "./activity-functions";
 
 registerApplication(
-  "single-spa-navbar",
-  () => System.import("single-spa-navbar"),
+  "@mf-demo/navbar",
+  () => System.import("@mf-demo/navbar"),
   isActive.navbar
 );
 
 registerApplication({
-  name: "single-spa-employees",
-  app: () => System.import("single-spa-employees"),
+  name: "@mf-demo/employees",
+  app: () => System.import("@mf-demo/employees"),
   activeWhen: isActive.employees
 });
 
 registerApplication({
-  name: "single-spa-employee-details",
-  app: () => System.import("single-spa-employee-details"),
+  name: "@mf-demo/employee-details",
+  app: () => System.import("@mf-demo/employee-details"),
   activeWhen: isActive.employeeDetails
 });
 
 registerApplication({
-  name: "single-spa-home",
-  app: () => System.import("single-spa-home"),
+  name: "@mf-demo/home",
+  app: () => System.import("@mf-demo/home"),
   activeWhen: location => location.pathname === "/"
   //activeWhen: isActive.home
 });

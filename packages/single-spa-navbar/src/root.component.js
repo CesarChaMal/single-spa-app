@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import React from "react";
 
 export default class Root extends React.Component {
@@ -16,7 +15,7 @@ export default class Root extends React.Component {
     } else {
       return (
         <>
-          <Link className="navbar-brand" to="/">
+          <a className="navbar-brand" href="/">
             <img
               src="https://single-spa.js.org/img/logo-white-bgblue.svg"
               className="d-inline-block align-top"
@@ -25,17 +24,17 @@ export default class Root extends React.Component {
               alt=""
             />
             Microfrontends Demo
-          </Link>
-          <div class="collapse navbar-collapse">
+          </a>
+          <div className="collapse navbar-collapse">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link className="nav-link" to="/employees">
+                <a className="nav-link" href="/employees">
                   Employees
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
-          <em className="text-white">{this.props.name} using React</em>
+          <em className="text-white">Navbar - React/JavaScript</em>
         </>
       );
     }

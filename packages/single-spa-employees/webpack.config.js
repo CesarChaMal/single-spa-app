@@ -9,6 +9,7 @@ module.exports = (webpackConfigEnv) => {
   });
 
   return webpackMerge.smart(defaultConfig, {
+    entry: "./src/mf-demo-employees.tsx",
     devtool: "sourcemap"
   });
 };

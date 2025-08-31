@@ -1,3 +1,4 @@
+import React from 'react';
 // ES Modules
 import parse from 'html-react-parser';
 // CommonJS
@@ -53,7 +54,7 @@ export default function Root(props) {
           <a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
         </p>
       </div>
-      <em>{props.name} using React</em>
+      <em>Home - React/TypeScript</em>
     </div>
   );
 

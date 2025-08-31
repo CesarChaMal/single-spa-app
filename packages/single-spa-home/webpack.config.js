@@ -10,6 +10,7 @@ module.exports = (webpackConfigEnv, argv) => {
   });
 
   return webpackMerge(defaultConfig, {
+    entry: "./src/mf-demo-home.tsx",
     devtool: "source-map",
     module: {
       rules: [
